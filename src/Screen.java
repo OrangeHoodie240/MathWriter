@@ -15,6 +15,9 @@ public class Screen extends Pane{
      //used to identify the drawn dots as belonging 
      //to the same line
      protected long lineCount = 0; 
+     
+     protected Lines lines = new Lines();
+     
      protected Line line = new Line(); 
 
      
@@ -52,6 +55,7 @@ public class Screen extends Pane{
             
             }
             
+            lines.add(line);
             line = new Line(); 
         });
     }

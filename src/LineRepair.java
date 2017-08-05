@@ -18,6 +18,11 @@ public class LineRepair{
         double slope, distance; 
         double x1, y1, x2, y2; 
         for(int i = 0; i < line.size() - 1; i++){
+            
+            //Setting bulletNumber in patch() because the line 
+            //was incomplete before
+            line.get(i).setBulletNumber(i + 1);
+            
             slope = calculateSlope(line.get(i), line.get(i + 1));
            
             distance = calculateDistance(line.get(i), line.get(i + 1));
@@ -39,6 +44,10 @@ public class LineRepair{
             }
             
         }
+        
+        //The very last BulletInk is not iterated and so needs its number set 
+        //after the loop has iterated
+        line.get(line.size() -1).setBulletNumber(line.size() - 1);
     }
     
     public double calculateDistance(BulletInk pointA, BulletInk pointB){
@@ -72,7 +81,7 @@ public class LineRepair{
             x = pointA.getX() - .5; 
         }
         double y = slope * (x -pointA.getX()) + pointA.getY();
-        return new BulletInk(x, y, Settings.bulletSize, lineNumber, bulletNumber); 
+        return new BulletInk(x, y, Settings.bulletSize, lineNumber); 
          
     }
     
@@ -97,7 +106,7 @@ public class LineRepair{
         }
 
         double x = (y - pointA.getY())/slope + pointA.getX(); 
-        return new BulletInk(x, y, Settings.bulletSize, lineNumber, bulletNumber);
+        return new BulletInk(x, y, Settings.bulletSize, lineNumber);
         
     }
     
@@ -113,7 +122,7 @@ public class LineRepair{
         double y = pointA.getY() + diff; 
         long lineNumber = pointA.lineNumber; 
         long bulletNumber = pointA.bulletNumber + 1; 
-        return new BulletInk(x, y, Settings.bulletSize, lineNumber, bulletNumber);
+        return new BulletInk(x, y, Settings.bulletSize, lineNumber);
         
     }
     
@@ -130,4 +139,5 @@ public class LineRepair{
         }
     }
     
+   
 }

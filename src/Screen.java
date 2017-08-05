@@ -16,8 +16,7 @@ public class Screen extends Pane{
      //to the same line
      protected long lineCount = 0; 
      protected ArrayList<BulletInk> line = new ArrayList<>(); 
-     //Used to count the dots in a line
-     protected long bulletCount = 0; 
+
      
      //This rectangle will be transparent
      //It's purpose is to set the size of the pane it is added to. 
@@ -36,8 +35,7 @@ public class Screen extends Pane{
         
         setOnMouseDragged(e->{
             lineCount += 1;   
-            bulletCount +=1; 
-            BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount, bulletCount);
+            BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
             b.setFill(Color.BLACK);
             getChildren().add(b);
             line.add(b);
@@ -45,9 +43,9 @@ public class Screen extends Pane{
            });
         
         setOnMouseReleased(e->{
-            bulletCount = 0; 
             new LineRepair(line).patch();
-           
+
+            
             getChildren().removeAll(line);
             for(BulletInk b: line){
                 getChildren().add(b);

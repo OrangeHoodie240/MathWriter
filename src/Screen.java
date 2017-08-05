@@ -52,15 +52,6 @@ public class Screen extends Pane{
             
             }
             
-            double slope = 0.0;
-            double distance = 0.0;
-            for(int i = 0; i < line.size() -1; i ++){
-                BulletInk a = line.get(i); 
-                BulletInk b = line.get(i + 1); 
-                slope = new LineRepair(line).calculateSlope(a, b); 
-                distance = new LineRepair(line).calculateDistance(a, b);
-            }
-            
             line = new Line(); 
         });
     }

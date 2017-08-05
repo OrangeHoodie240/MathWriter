@@ -15,7 +15,7 @@ public class Screen extends Pane{
      //used to identify the drawn dots as belonging 
      //to the same line
      protected long lineCount = 0; 
-     protected ArrayList<BulletInk> line = new ArrayList<>(); 
+     protected Line line = new Line(); 
 
      
      //This rectangle will be transparent
@@ -43,7 +43,7 @@ public class Screen extends Pane{
            });
         
         setOnMouseReleased(e->{
-            new LineRepair(line).patch();
+            line.patch();
 
             
             getChildren().removeAll(line);
@@ -61,7 +61,7 @@ public class Screen extends Pane{
                 distance = new LineRepair(line).calculateDistance(a, b);
             }
             
-            line = new ArrayList<>(); 
+            line = new Line(); 
         });
     }
     

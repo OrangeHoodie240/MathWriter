@@ -6,9 +6,9 @@ import javafx.scene.paint.Color;
 
 
 public class LineRepair{
-    ArrayList<BulletInk> line; 
+    Line line; 
     
-    public LineRepair(ArrayList<BulletInk> line){
+    public LineRepair(Line line){
         this.line = line; 
             
         

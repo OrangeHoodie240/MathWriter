@@ -130,36 +130,4 @@ public class LineRepair{
         }
     }
     
-    
-    public void fillVerticalTangents(){
-        int lineCounter = 0; 
-        while(lineCounter < line.size() -1){
-            BulletInk pointA = line.get(lineCounter); 
-            BulletInk pointB = line.get(lineCounter + 1); 
-            double distance = calculateDistance(pointA, pointB);        
-            if(distance >= 1){
-                double slope = calculateSlope(pointA, pointB);
-                
-                if(slope > 1000 || slope < -1000){
-                    BulletInk b; 
-                    
-                    if(pointB.getY() > pointA.getY()){
-                       b = calculateYFromInfSlope(pointA, slope, 1);
-                    }
-                    else{
-                        b = calculateYFromInfSlope(pointA, slope, -1);
-                    }
-                    line.add(lineCounter + 1, b);
-                }
-                
-        
-            }
-           
-            lineCounter += 1; 
-        }
-    }
-    
-    
-        
-    
 }

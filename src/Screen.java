@@ -48,8 +48,7 @@ public class Screen extends Pane{
             bulletCount = 0; 
             new LineRepair(line).patch();
            
-            
-            getChildren().clear();  
+            getChildren().removeAll(line);
             for(BulletInk b: line){
                 getChildren().add(b);
             
@@ -62,11 +61,6 @@ public class Screen extends Pane{
                 BulletInk b = line.get(i + 1); 
                 slope = new LineRepair(line).calculateSlope(a, b); 
                 distance = new LineRepair(line).calculateDistance(a, b);
-                
-                /*
-                System.out.print("bullet Number: " + a.bulletNumber + "   slope with next bullet: " + slope + "   coords:   " +   a.getX() + ", " + a.getY());
-                System.out.println("  Distance with next: " + distance);
-               */
             }
             
             line = new ArrayList<>(); 

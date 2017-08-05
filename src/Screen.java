@@ -47,7 +47,6 @@ public class Screen extends Pane{
         setOnMouseReleased(e->{
             bulletCount = 0; 
             new LineRepair(line).patch();
-            new LineRepair(line).findProblemPoints();
            
             
             getChildren().clear();  

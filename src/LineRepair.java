@@ -14,31 +14,30 @@ public class LineRepair{
         
     }
     
-    public void patch(){
-        int lineCounter = 0; 
-        while(lineCounter < line.size() -1){
+     public void patch(){
+        double slope, distance; 
+        double x1, y1, x2, y2; 
+        for(int i = 0; i < line.size() - 1; i++){
+            slope = calculateSlope(line.get(i), line.get(i + 1));
+           
+            distance = calculateDistance(line.get(i), line.get(i + 1));
             
-            
-            BulletInk pointA = line.get(lineCounter); 
-            BulletInk pointB = line.get(lineCounter + 1); 
-            double distance = calculateDistance(pointA, pointB);        
-            if(distance > .5){
-                if(pointA.lineNumber != 1){
-                    
-                }
-                double slope = calculateSlope(pointA, pointB);
-                
-                if(Math.abs((pointA.getX() - pointB.getX())) >= .3){
-                    BulletInk newBullet = substituteX(pointA, pointB, slope);
-                    line.add(lineCounter + 1, newBullet);
+            if(distance >= 1){                
+                x1 = line.get(i).getX(); 
+                y1 = line.get(i).getY();
+                x2 = line.get(i+1).getX(); 
+                y2 = line.get(i+1).getY();
+                BulletInk b; 
+               
+                if(Math.abs(x1 -x2) > Math.abs(y1-y2)){
+                    b = substituteX(line.get(i), line.get(i + 1), slope);
                 }
                 else{
-                    BulletInk newBullet = substituteY(pointA, pointB, slope);
-                    line.add(lineCounter + 1, newBullet);
+                    b = substituteY(line.get(i), line.get(i + 1), slope);
                 }
-                
+                line.add(i + 1, b);
             }
-            lineCounter += 1; 
+            
         }
     }
     
@@ -160,47 +159,7 @@ public class LineRepair{
         }
     }
     
-    public void findProblemPoints(){
-        double slope, distance; 
-        double x1, y1, x2, y2; 
-        for(int i = 0; i < line.size() - 1; i++){
-            slope = calculateSlope(line.get(i), line.get(i + 1));
-           
-            distance = calculateDistance(line.get(i), line.get(i + 1));
-            
-            if(distance >= 1){                
-                x1 = line.get(i).getX(); 
-                y1 = line.get(i).getY();
-                x2 = line.get(i+1).getX(); 
-                y2 = line.get(i+1).getY();
-                BulletInk b; 
-               
-                if(Math.abs(x1 -x2) > Math.abs(y1-y2)){
-                    b = substituteX(line.get(i), line.get(i + 1), slope);
-                    System.out.println(b.getX() + "  " + b.getY()); 
-                    
-                    double distance2 = calculateDistance(line.get(i), b);
-                    System.out.println("Distance from previous: " + distance2);
-                    System.out.println("Compared to " + distance);
-                    
-                    double distance3 = calculateDistance(line.get(i + 1), b);
-                    System.out.println("Distance from next: " + distance3);
-                    
-                }
-                else{
-                    b = substituteY(line.get(i), line.get(i + 1), slope);
-                    System.out.println(b.getX() + "  " + b.getY()); 
-                    
-                    double distance2 = calculateDistance(line.get(i), b);
-                    System.out.println("Distance from previous: " + distance2);
-                    System.out.println("Compared to " + distance);
-                    
-                    double distance3 = calculateDistance(line.get(i + 1), b);
-                    System.out.println("Distance from next: " + distance3);
-                }
-                line.add(i + 1, b);
-            }
-            
-        }
-    }
+    
+        
+    
 }

@@ -49,6 +49,7 @@ public class Screen extends Pane{
             line.patch();
             
             
+            
             getChildren().removeAll(line);
             for(BulletInk b: line){
                 getChildren().add(b);

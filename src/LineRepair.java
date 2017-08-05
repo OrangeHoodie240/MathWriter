@@ -126,18 +126,5 @@ public class LineRepair{
         
     }
     
-    
-    
-    
-    public void findSlopesAndDistance(){
-        double slope = 0.0; 
-        double distance = 0.0;
-        for(int i = 0; i < line.size() - 1; i++){
-            slope = calculateSlope(line.get(i), line.get(i + 1));
-            distance = calculateDistance(line.get(i), line.get(i + 1));
-            System.out.println("Slope  " + slope + "  distance   " + distance);
-        }
-    }
-    
    
 }

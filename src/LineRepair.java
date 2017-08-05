@@ -18,23 +18,23 @@ public class LineRepair{
         while(lineCounter < line.size() -1){
             BulletInk pointA = line.get(lineCounter); 
             BulletInk pointB = line.get(lineCounter + 1); 
-            double distance = calculateDistance(pointA, pointB);
-            System.out.println(distance);
+            double distance = calculateDistance(pointA, pointB);        
             if(distance >= 1){
                 double slope = calculateSlope(pointA, pointB);
+                if(slope > 100000000 || slope < -10000000)System.out.println(slope);
                 
                 if(Math.abs((pointA.getX() - pointB.getX())) >= .3){
                     BulletInk newBullet = substituteY(pointA, pointB, slope);
                     line.add(lineCounter + 1, newBullet);
                 }
-                else if(Math.abs((pointA.getY() - pointB.getY())) >= 1){
-                    
+                else{
+                    BulletInk newBullet = substituteX(pointA, pointB, slope);
+                    line.add(lineCounter + 1, newBullet);
                 }
                 
             }
            
             lineCounter += 1; 
-            //System.out.println("line counter " + lineCounter + " size -1 " + (line.size()-1) );
         }
     }
     
@@ -71,27 +71,23 @@ public class LineRepair{
         double y = slope * (x -pointA.getX()) + pointA.getY();
         return new BulletInk(x, y, Settings.bulletSize, lineNumber, bulletNumber); 
     }
-    /*
+    
     public BulletInk substituteX(BulletInk pointA, BulletInk pointB, double slope){
         double y = 0.0; 
         long lineNumber = pointA.lineNumber; 
         long bulletNumber = pointA.bulletNumber + 1; 
         
         if(pointB.getY() > pointA.getY()){
-           y = pointA.getY() + 1.5; 
+           y = pointA.getY() + .5; 
         }
         else{
-            y = pointA.getY() - 1.5; 
+            y = pointA.getY() - .5; 
         }
-        
-              (y1 -y)/m + x= x1
-           (y1-y2)/m + x2 = x1
-        
-        
-        
-                
+
+        double x = (y - pointA.getY())/slope + pointA.getX(); 
+
         return new BulletInk(x, y, Settings.bulletSize, lineNumber, bulletNumber); 
     }
-    */
+    
     
 }

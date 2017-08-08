@@ -2,6 +2,8 @@
 
 
 public class Line extends java.util.ArrayList<BulletInk>{
+    protected double[] centerPoint; 
+    
     public Line(){
         
     }
@@ -32,5 +34,60 @@ public class Line extends java.util.ArrayList<BulletInk>{
             get(i).setX(x / scalar);
             get(i).setY(y / scalar);
         }
+    }
+    
+    
+    public double[] getCenterPoint(){       
+        double[] centerPoint = new double[2];
+        double maxX = this.get(0).getX(); 
+        double maxY = this.get(0).getY();
+        double minX = this.get(0).getX();
+        double minY = this.get(0).getY();
+        double midX; 
+        double midY;
+        
+        for(BulletInk b: this){
+            if(b.getX() > maxX){
+                maxX = b.getX();
+            }
+            else if(b.getX() < minX){
+                minX = b.getX();
+            }
+            
+            if(b.getY() > maxY){
+                maxY = b.getY();
+            }
+            else if(b.getY() < minY){
+                minY = b.getY();
+            }
+        }
+        
+        if(maxX == minX){
+            midX = maxX;
+        }
+        else{
+            midX = ( minX + (Math.abs(minX-maxX)/2)); 
+        }
+        
+        if(minY == maxY){
+            midY = maxY;
+        }
+        else{
+            midY = (minY + (Math.abs(minY - maxY)/2));
+        }
+        
+        System.out.println(maxX); 
+        System.out.println(minX); 
+        System.out.println(maxY);
+        System.out.println(minY);
+        
+        centerPoint[0] = midX;
+        centerPoint[1] = midY;
+        return centerPoint;
+    }
+    
+    //This wil take a coordinate to center the line at
+    public void moveLine(double centerX, double centerY){
+        
     }
 }

@@ -47,13 +47,14 @@ public class Screen extends Pane{
         
         setOnMouseReleased(e->{
             line.patch();
-
+            line.shrinkDown(2);
             
             getChildren().removeAll(line);
             for(BulletInk b: line){
                 getChildren().add(b);
             
             }
+            
             
             lines.add(line);
             line = new Line(); 

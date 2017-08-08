@@ -86,8 +86,15 @@ public class Line extends java.util.ArrayList<BulletInk>{
         return centerPoint;
     }
     
-    //This wil take a coordinate to center the line at
-    public void moveLine(double centerX, double centerY){
-        
+   
+    public void moveLine(double moveX, double moveY){
+        if(moveX != 0.0 || moveY != 0.0){
+            
+            System.out.println("Happend");
+            for(BulletInk b: this){
+                b.setX(b.getX() + moveX);
+                b.setY(b.getY() + moveY); 
+            }
+        }
     }
 }

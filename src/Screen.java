@@ -47,7 +47,6 @@ public class Screen extends Pane{
         
         setOnMouseReleased(e->{
             line.patch();
-            line.shrinkDown(2);
             
             getChildren().removeAll(line);
             for(BulletInk b: line){

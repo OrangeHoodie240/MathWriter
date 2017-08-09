@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,6 +21,11 @@ public class Screen extends Pane{
      
      protected Line line = new Line(); 
 
+     protected boolean primaryClick = false; 
+     
+     protected boolean secondaryClick = false; 
+     
+     protected Selector selector = new Selector(this);
      
      //This rectangle will be transparent
      //It's purpose is to set the size of the pane it is added to. 
@@ -27,6 +33,8 @@ public class Screen extends Pane{
      
     public Screen(){
         //Color the rectangle. Make transparent. 
+        
+        
         screenBlock.setFill(Color.rgb(0, 0, 255, 0));
         
        
@@ -35,20 +43,48 @@ public class Screen extends Pane{
         
         
         
-        
+        setOnMousePressed(e ->{
+            if(MouseButton.SECONDARY == e.getButton()){
+                toggleSecondaryClick();
+            }
+            else if(MouseButton.PRIMARY == e.getButton()){
+                togglePrimaryClick(); 
+                
+                if(selector.getSizeFinalized() == true && !selector.contains(e.getX(), e.getY())){
+                    if(getChildren().contains(selector)){
+                        getChildren().remove(selector);
+                        selector.emptyLines(); 
+                    }
+                }
+            }
+        });
         setOnMouseDragged(e->{
-            if(javafx.scene.input.MouseButton.PRIMARY == e.getButton()){
+
+            if(MouseButton.PRIMARY == e.getButton() && !getChildren().contains(selector)){
                 lineCount += 1;   
-                BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
-                b.setFill(Color.BLACK);
-                getChildren().add(b);
-                line.add(b);
+                    BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
+                    b.setFill(Color.BLACK);
+                    getChildren().add(b);
+                    line.add(b);
             }
             
+            
+             if(primaryClick == true && secondaryClick == true){
+                if(!getChildren().contains(selector)){
+                    selector.setSelector(e.getX(), e.getY());
+                    getChildren().add(selector);
+                }
+                else if(selector.getSizeFinalized() == false){
+                    selector.resize(e.getX(), e.getY());
+                }
+            }
+           
            });
         
         setOnMouseReleased(e->{        
-            if(javafx.scene.input.MouseButton.PRIMARY == e.getButton()){
+            if(MouseButton.PRIMARY == e.getButton()){
+                togglePrimaryClick(); 
+
                 line.patch();
             
                 getChildren().removeAll(line);
@@ -61,10 +97,40 @@ public class Screen extends Pane{
                 lines.add(line);
                 line = new Line(); 
             }
+            else if(MouseButton.SECONDARY == e.getButton()){
+                toggleSecondaryClick(); 
+            }
+            
+            //seltor finalized
+            if(primaryClick == false && secondaryClick == false){
+                    if(selector.getSizeFinalized() == false){
+                        selector.toggleSizeFinalized();
+                        selector.getLines(); 
+                    }
+                    
+            }
+            
+            
         });
     }
     
+    public void togglePrimaryClick(){
+        if(primaryClick == false){
+            primaryClick =true; 
+        }
+        else{
+            primaryClick = false;
+        }
+    }
     
+    public void toggleSecondaryClick(){
+        if(secondaryClick == false){
+            secondaryClick = true; 
+        }
+        else{
+            secondaryClick = false; 
+        }
+    }
     
 }
 

@@ -49,21 +49,13 @@ public class Selector extends javafx.scene.shape.Rectangle{
        
     }
     
-    public void makeLinesRed(){
-        for(Line l: lines){
-            for(BulletInk b: l){
-                b.setFill(Color.RED);
-            }
-        }
-    }
     
     public void getLines(){
         for(Line l: screen.lines){
             if(containsLine(l)){
                 lines.add(l); 
             }
-        }
-        makeLinesRed(); 
+        } 
     }
     
     public boolean containsLine(Line l){
@@ -112,7 +104,36 @@ public class Selector extends javafx.scene.shape.Rectangle{
     }
     
     public void moveSelector(double x, double y){
+        double originalSelectorX = getX();
+        double originalSelectorY = getY();
+        
+        
         setX(x - mouseXDist);
         setY(y - mouseYDist); 
+        
+        double xChange = 0.0;
+        if(originalSelectorX > getX()){
+            xChange = -Math.abs(originalSelectorX -getX()); 
+        }
+        else{
+            xChange = Math.abs(originalSelectorX - getX());
+        }
+
+        double yChange = 0.0;
+        if(originalSelectorY > getY()){
+            yChange = -Math.abs(originalSelectorY -getY()); 
+        }
+        else{
+            yChange = Math.abs(originalSelectorY - getY());
+        }
+        
+        moveLines(xChange, yChange);
     }
+    public void moveLines(double x, double y){
+        for(Line l: lines){
+            l.moveLine(x,y);
+            
+        }
+    }
+    
 }

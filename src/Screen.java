@@ -54,6 +54,7 @@ public class Screen extends Pane{
                     if(getChildren().contains(selector)){
                         getChildren().remove(selector);
                         selector.emptyLines(); 
+                        
                     }
                 }
             }
@@ -68,15 +69,28 @@ public class Screen extends Pane{
                     line.add(b);
             }
             
+            if(MouseButton.PRIMARY == e.getButton() && getChildren().contains(selector)){
+                if(selector.getSizeFinalized() && selector.contains(e.getX(), e.getY())){
+                    if(selector.isMoving() == false){
+                        selector.toggleIsMoving();
+                        selector.setMouseDistance(e.getX(), e.getY());
+                    } 
+                }
+            }
             
-             if(primaryClick == true && secondaryClick == true){
-                if(!getChildren().contains(selector)){
+                     
+            if(primaryClick == true && secondaryClick == true){
+               if(!getChildren().contains(selector)){
                     selector.setSelector(e.getX(), e.getY());
                     getChildren().add(selector);
-                }
-                else if(selector.getSizeFinalized() == false){
+               }
+               else if(selector.getSizeFinalized() == false){
                     selector.resize(e.getX(), e.getY());
-                }
+               }
+            }
+            
+            if(selector.isMoving()){
+                selector.moveSelector(e.getX(), e.getY());
             }
            
            });
@@ -84,7 +98,10 @@ public class Screen extends Pane{
         setOnMouseReleased(e->{        
             if(MouseButton.PRIMARY == e.getButton()){
                 togglePrimaryClick(); 
-
+                if(selector.isMoving()){
+                    selector.toggleIsMoving();
+                }
+                
                 line.patch();
             
                 getChildren().removeAll(line);

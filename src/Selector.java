@@ -10,6 +10,9 @@ public class Selector extends javafx.scene.shape.Rectangle{
     protected Screen screen;
     protected boolean sizeFinalized = true; 
     protected Lines lines = new Lines(); 
+    protected boolean isMoving = false; 
+    protected double mouseXDist = 0.0; 
+    protected double mouseYDist = 0.0; 
     
     public Selector(Screen screen){
         this.screen = screen;
@@ -24,6 +27,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         setWidth(10);
         setHeight(10);
         sizeFinalized = false; 
+        isMoving = false; 
     }
     
     public void resize(double x, double y){
@@ -89,5 +93,26 @@ public class Selector extends javafx.scene.shape.Rectangle{
         return sizeFinalized; 
     }
     
+    public boolean isMoving(){
+        return isMoving; 
+    }
     
+    public void toggleIsMoving(){
+        if(isMoving){
+            isMoving = false; 
+        }
+        else{
+            isMoving = true; 
+        }
+    }
+    
+    public void setMouseDistance(double x, double y){
+        mouseXDist = Math.abs(getX() - x ); 
+        mouseYDist = (Math.abs(getY() - y)); 
+    }
+    
+    public void moveSelector(double x, double y){
+        setX(x - mouseXDist);
+        setY(y - mouseYDist); 
+    }
 }

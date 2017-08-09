@@ -37,26 +37,30 @@ public class Screen extends Pane{
         
         
         setOnMouseDragged(e->{
-            lineCount += 1;   
-            BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
-            b.setFill(Color.BLACK);
-            getChildren().add(b);
-            line.add(b);
+            if(javafx.scene.input.MouseButton.PRIMARY == e.getButton()){
+                lineCount += 1;   
+                BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
+                b.setFill(Color.BLACK);
+                getChildren().add(b);
+                line.add(b);
+            }
             
            });
         
-        setOnMouseReleased(e->{
-            line.patch();
+        setOnMouseReleased(e->{        
+            if(javafx.scene.input.MouseButton.PRIMARY == e.getButton()){
+                line.patch();
             
-            getChildren().removeAll(line);
-            for(BulletInk b: line){
-                getChildren().add(b);
+                getChildren().removeAll(line);
+                for(BulletInk b: line){
+                    getChildren().add(b);
             
+                }
+            
+            
+                lines.add(line);
+                line = new Line(); 
             }
-            
-            
-            lines.add(line);
-            line = new Line(); 
         });
     }
     

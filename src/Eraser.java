@@ -35,7 +35,6 @@ public class Eraser extends Rectangle{
         Lines newLines = new Lines(); 
         for(Line l: markedLines){
             newLines.addAll(l.split()); 
-            System.out.println(newLines.size());
             screen.lines.remove(l);
         }
         screen.lines.addAll(newLines);

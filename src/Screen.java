@@ -27,6 +27,8 @@ public class Screen extends Pane{
      
      protected Selector selector = new Selector(this);
      
+     protected Eraser eraser = new Eraser(this); 
+     
      //This rectangle will be transparent
      //It's purpose is to set the size of the pane it is added to. 
      Rectangle screenBlock = new Rectangle(Specifications.screenWidth, Specifications.screenHeight);
@@ -92,6 +94,22 @@ public class Screen extends Pane{
             if(selector.isMoving()){
                 selector.moveSelector(e.getX(), e.getY());
             }
+            
+            if(e.getButton() == MouseButton.SECONDARY && !getChildren().contains(selector)){
+                if(!getChildren().contains(eraser)){
+                    getChildren().add(eraser);
+                    eraser.setX(e.getX());
+                    eraser.setY(e.getY());
+                }
+                else{
+                    eraser.setX(e.getX());
+                    eraser.setY(e.getY());
+                    eraser.erase(); 
+                }
+            }
+            if(e.getButton() == MouseButton.SECONDARY && getChildren().contains(selector)){
+                getChildren().remove(eraser);
+            }
            
            });
         
@@ -116,6 +134,9 @@ public class Screen extends Pane{
             }
             else if(MouseButton.SECONDARY == e.getButton()){
                 toggleSecondaryClick(); 
+                if(getChildren().contains(eraser)){
+                    getChildren().remove(eraser);
+                }
             }
             
             //seltor finalized
@@ -126,6 +147,7 @@ public class Screen extends Pane{
                     }
                     
             }
+            
             
             
         });

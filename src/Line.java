@@ -170,4 +170,24 @@ public class Line extends java.util.ArrayList<BulletInk>{
         }
                     return minY; 
     }
+    
+    public Lines split(){
+        Lines lines = new Lines(); 
+        Line newLine = new Line();
+        
+        for(BulletInk b: this){
+            if(!b.isBlank()){
+                newLine.add(b); 
+            }
+            else{
+                if(newLine.size() > 0){
+                    lines.add(newLine); 
+                    newLine = new Line(); 
+                }
+            }
+        }
+        
+        if(newLine.size() > 0) lines.add(newLine);
+        return lines; 
+    }
 }

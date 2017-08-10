@@ -48,6 +48,11 @@ public class Screen extends Pane{
         setOnMousePressed(e ->{
             if(MouseButton.SECONDARY == e.getButton()){
                 toggleSecondaryClick();
+                if(getChildren().contains(selector)){
+                    getChildren().remove(selector);
+                    selector.emptyLines(); 
+                      
+                }
             }
             else if(MouseButton.PRIMARY == e.getButton()){
                 togglePrimaryClick(); 

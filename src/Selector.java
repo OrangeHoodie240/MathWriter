@@ -283,7 +283,6 @@ public class Selector extends javafx.scene.shape.Rectangle{
             inBotR = false; 
             inBotL = false; 
             clearLineHistory(); 
-            System.out.println("Patching");
             patchLines();
         }
         else{
@@ -330,9 +329,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         
         else if(getHeight() < anchorHeight){
             scalar = (getHeight())/anchorHeight;
-            System.out.println("Before " + scalar);
             scalar = scalar;
-            System.out.println("After " + scalar);
         }
         
         scaleLines(scalar);

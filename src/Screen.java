@@ -55,8 +55,11 @@ public class Screen extends Pane{
             if(MouseButton.SECONDARY == e.getButton()){
                 toggleSecondaryClick();
                 if(getChildren().contains(selector)){
-                    getChildren().remove(selector);
-                    selector.emptyLines(); 
+                    if(!selector.contains(e.getX(), e.getY())){
+                        getChildren().remove(selector);
+                        selector.emptyLines(); 
+                    }
+                    
                       
                 }
             }

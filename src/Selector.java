@@ -1,5 +1,6 @@
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 
 
@@ -14,6 +15,11 @@ public class Selector extends javafx.scene.shape.Rectangle{
     protected double mouseXDist = 0.0; 
     protected double mouseYDist = 0.0; 
     
+    protected javafx.scene.shape.Rectangle topL = new Rectangle(); 
+    protected javafx.scene.shape.Rectangle topR = new Rectangle(); 
+    protected javafx.scene.shape.Rectangle botL = new Rectangle(); 
+    protected javafx.scene.shape.Rectangle botR = new Rectangle(); 
+    
     public Selector(Screen screen){
         this.screen = screen;
         setFill(Color.color(0, 1, 0, .1));
@@ -26,6 +32,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         setY(y);
         setWidth(10);
         setHeight(10);
+        updateScaleSpots(); 
         sizeFinalized = false; 
         isMoving = false; 
     }
@@ -78,6 +85,8 @@ public class Selector extends javafx.scene.shape.Rectangle{
         }
         else{
             sizeFinalized = true;
+            updateScaleSpots(); 
+            
         }
     }
     
@@ -136,4 +145,46 @@ public class Selector extends javafx.scene.shape.Rectangle{
         }
     }
     
+    
+    public void updateScaleSpots(){
+        double size = getWidth()/8; 
+        
+        topL.setX(getX()); 
+        topL.setY(getY()); 
+        topL.setWidth(size);
+        topL.setHeight(size);
+        
+        topR.setX(getX() + getWidth() - size); 
+        topR.setY(getY());
+        topR.setWidth(size);
+        topR.setHeight(size);
+        
+        
+        botL.setX(getX()); 
+        botL.setY(getY() + getHeight() - size);
+        botL.setWidth(size); 
+        botL.setHeight(size);
+        
+        botR.setX(getX() + getWidth() - size); 
+        botR.setY(getY() + getHeight() -size); 
+        botR.setWidth(size); 
+        botR.setHeight(size);
+        
+    }
+    
+    public Rectangle getTopR(){
+        return topR; 
+    }
+    
+    public Rectangle getTopL(){
+        return topL; 
+    }
+    
+    public Rectangle getBotR(){
+        return botR; 
+    }
+    
+    public Rectangle getBotL(){
+        return botL; 
+    }
 }

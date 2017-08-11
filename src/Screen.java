@@ -46,6 +46,11 @@ public class Screen extends Pane{
         
         
         setOnMousePressed(e ->{
+            if(MouseButton.PRIMARY == e.getButton() && selector.getSizeFinalized()){
+                if(selector.getTopR().contains(e.getX(), e.getY())){
+                    System.out.println("Fired");
+                }
+            }
             if(MouseButton.SECONDARY == e.getButton()){
                 toggleSecondaryClick();
                 if(getChildren().contains(selector)){

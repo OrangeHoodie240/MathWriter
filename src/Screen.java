@@ -46,8 +46,32 @@ public class Screen extends Pane{
         
         
         setOnMousePressed(e ->{
-            //Test information
-            if(MouseButton.PRIMARY == e.getButton() && selector.getSizeFinalized()){
+            if(MouseButton.SECONDARY == e.getButton()){
+                toggleSecondaryClick();
+                if(getChildren().contains(selector)){
+                    if(!selector.contains(e.getX(), e.getY())){
+                        getChildren().remove(selector);
+                        selector.emptyLines(); 
+                    }
+                    
+                      
+                }
+            }
+            else if(MouseButton.PRIMARY == e.getButton()){
+                togglePrimaryClick(); 
+                
+                if(selector.getSizeInitialized() == true && !selector.contains(e.getX(), e.getY())){
+                    if(getChildren().contains(selector)){
+                        getChildren().remove(selector);
+                        selector.emptyLines(); 
+                        
+                    }
+                }
+            }
+        });
+        setOnMouseDragged(e->{
+                   //Test information
+            if(MouseButton.PRIMARY == e.getButton() && selector.getSizeInitialized()){
                 if(selector.getTopL().contains(e.getX(), e.getY())){
                     System.out.println("Fired");
                 }
@@ -64,30 +88,6 @@ public class Screen extends Pane{
                     System.out.println("Fired");
                 }
             }
-            if(MouseButton.SECONDARY == e.getButton()){
-                toggleSecondaryClick();
-                if(getChildren().contains(selector)){
-                    if(!selector.contains(e.getX(), e.getY())){
-                        getChildren().remove(selector);
-                        selector.emptyLines(); 
-                    }
-                    
-                      
-                }
-            }
-            else if(MouseButton.PRIMARY == e.getButton()){
-                togglePrimaryClick(); 
-                
-                if(selector.getSizeFinalized() == true && !selector.contains(e.getX(), e.getY())){
-                    if(getChildren().contains(selector)){
-                        getChildren().remove(selector);
-                        selector.emptyLines(); 
-                        
-                    }
-                }
-            }
-        });
-        setOnMouseDragged(e->{
 
             if(MouseButton.PRIMARY == e.getButton() && !getChildren().contains(selector)){
                 lineCount += 1;   
@@ -98,7 +98,7 @@ public class Screen extends Pane{
             }
             
             if(MouseButton.PRIMARY == e.getButton() && getChildren().contains(selector)){
-                if(selector.getSizeFinalized() && selector.contains(e.getX(), e.getY())){
+                if(selector.getSizeInitialized()&& selector.contains(e.getX(), e.getY())){
                     if(selector.isMoving() == false){
                         selector.toggleIsMoving();
                         selector.setMouseDistance(e.getX(), e.getY());
@@ -112,7 +112,7 @@ public class Screen extends Pane{
                     selector.setSelector(e.getX(), e.getY());
                     getChildren().add(selector);
                }
-               else if(selector.getSizeFinalized() == false){
+               else if(selector.getSizeInitialized() == false){
                     selector.resize(e.getX(), e.getY());
                }
             }
@@ -166,10 +166,10 @@ public class Screen extends Pane{
                 }
             }
             
-            //seltor finalized
+            //seltor Initialized
             if(primaryClick == false && secondaryClick == false){
-                    if(selector.getSizeFinalized() == false){
-                        selector.toggleSizeFinalized();
+                    if(selector.getSizeInitialized() == false){
+                        selector.toggleSizeInitialized();
                         selector.loadLines(); 
                         
                         if(selector.isEmpty()){

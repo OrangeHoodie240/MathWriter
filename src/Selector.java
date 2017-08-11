@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 public class Selector extends javafx.scene.shape.Rectangle{
     protected Screen screen;
-    protected boolean sizeFinalized = true; 
+    protected boolean sizeInitialized = true; 
     protected Lines lines = new Lines(); 
     protected boolean isMoving = false; 
     protected double mouseXDist = 0.0; 
@@ -33,12 +33,12 @@ public class Selector extends javafx.scene.shape.Rectangle{
         setWidth(10);
         setHeight(10);
         updateScaleSpots(); 
-        sizeFinalized = false; 
+        sizeInitialized = false; 
         isMoving = false; 
     }
     
     public void resize(double x, double y){
-        if(sizeFinalized == false){
+        if(sizeInitialized == false){
             if(x > getX()){
             double difX = Math.abs(getX() - x);
             setWidth(difX);
@@ -79,19 +79,19 @@ public class Selector extends javafx.scene.shape.Rectangle{
         lines.clear();
     }
     
-    public void toggleSizeFinalized(){
-        if(sizeFinalized == true){
-            sizeFinalized = false;
+    public void toggleSizeInitialized(){
+        if(sizeInitialized == true){
+            sizeInitialized = false;
         }
         else{
-            sizeFinalized = true;
+            sizeInitialized = true;
             updateScaleSpots(); 
             
         }
     }
     
-    public boolean getSizeFinalized(){
-        return sizeFinalized; 
+    public boolean getSizeInitialized(){
+        return sizeInitialized; 
     }
     
     public boolean isMoving(){
@@ -197,5 +197,9 @@ public class Selector extends javafx.scene.shape.Rectangle{
         else{
             return false; 
         }
+    }
+    
+    public void scaleFromTopL(double x, double y){
+        
     }
 }

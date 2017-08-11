@@ -13,7 +13,7 @@ public class Line extends java.util.ArrayList<BulletInk>{
     
         }
     }
-    public void blowUp(int scalar){
+    public void blowUp(double scalar){
         if(size() > 0){
             
             double midX = getCenterPoint()[0];
@@ -189,5 +189,32 @@ public class Line extends java.util.ArrayList<BulletInk>{
         
         if(newLine.size() > 0) lines.add(newLine);
         return lines; 
+    }
+    
+    public boolean haveHistoryCoordinates(){
+        for(BulletInk b: this){
+            if(!b.hasHist()){
+                return false;
+            }
+        }
+        return true; 
+    }
+    
+    public void setHistoryCoordinates(){
+        for(BulletInk b: this){
+            b.setHist(); 
+        }
+    }
+    
+    public void restoreToHistory(){
+        for(BulletInk b: this){
+            b.restoreToHist();
+        }
+    }
+    
+    public void clearLineHistory(){
+        for(BulletInk b: this){
+            b.clearHistory(); 
+        }
     }
 }

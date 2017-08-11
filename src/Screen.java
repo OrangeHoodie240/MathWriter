@@ -72,34 +72,30 @@ public class Screen extends Pane{
         setOnMouseDragged(e->{
                    //Test information
             if(MouseButton.PRIMARY == e.getButton() && selector.getSizeInitialized()){
-                if(selector.getTopL().contains(e.getX(), e.getY())){
-                    System.out.println("Fired");
-                }
-                
-                if(selector.getTopR().contains(e.getX(), e.getY())){
-                    System.out.println("Fired");
-                }
-                
-                if(selector.getBotL().contains(e.getX(), e.getY())){
-                    System.out.println("Fired");
-                }
-                
-                if(selector.getBotR().contains(e.getX(), e.getY())){
-                    System.out.println("Fired");
+                if(getChildren().contains(selector) && !selector.isMoving()){
+                    if(!selector.isBeingRescaled()){
+                        if(selector.checkInCorners(e.getX(), e.getY())){
+                            selector.toggleBeingRescaled();
+                        }
+                    }
                 }
             }
-
+            
+            if(selector.isBeingRescaled()){
+                selector.scale(e.getX() , e.getY());
+            }
+            
             if(MouseButton.PRIMARY == e.getButton() && !getChildren().contains(selector)){
                 lineCount += 1;   
-                    BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
-                    b.setFill(Color.BLACK);
-                    getChildren().add(b);
-                    line.add(b);
+                BulletInk b = new BulletInk(e.getX(), e.getY(), Settings.bulletSize, lineCount);
+                b.setFill(Color.BLACK);
+                getChildren().add(b);
+                line.add(b);
             }
             
             if(MouseButton.PRIMARY == e.getButton() && getChildren().contains(selector)){
                 if(selector.getSizeInitialized()&& selector.contains(e.getX(), e.getY())){
-                    if(selector.isMoving() == false){
+                    if(!selector.isMoving() && !selector.isBeingRescaled()){
                         selector.toggleIsMoving();
                         selector.setMouseDistance(e.getX(), e.getY());
                     } 
@@ -146,6 +142,10 @@ public class Screen extends Pane{
                     selector.toggleIsMoving();
                 }
                 
+                if(selector.isBeingRescaled()){
+                    selector.toggleBeingRescaled();
+                }
+                
                 line.patch();
             
                 getChildren().removeAll(line);
@@ -178,7 +178,6 @@ public class Screen extends Pane{
                     }
                     
             }
-            
             
             
         });

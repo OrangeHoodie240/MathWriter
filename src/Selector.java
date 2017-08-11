@@ -20,6 +20,13 @@ public class Selector extends javafx.scene.shape.Rectangle{
     protected boolean topRIsAnchor = false ;
     protected boolean topLIsAnchor = false; 
     protected double[] anchorPoint = new double[2]; 
+    protected double anchorWidth;
+    protected double anchorHeight; 
+    
+    protected boolean inTopR = false; 
+    protected boolean inTopL = false; 
+    protected boolean inBotL = false; 
+    protected boolean inBotR = false; 
     
     
     protected javafx.scene.shape.Rectangle topL = new Rectangle(); 
@@ -44,6 +51,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         updateScaleSpots(); 
         sizeInitialized = false; 
         isMoving = false; 
+        beingRescaled = false;
     }
     
     public void resize(double x, double y){
@@ -139,6 +147,8 @@ public class Selector extends javafx.scene.shape.Rectangle{
         }
         else{
             sizeInitialized = true;
+            anchorWidth = getWidth();
+            anchorHeight = getHeight(); 
             updateScaleSpots(); 
             
         }
@@ -166,7 +176,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         mouseYDist = (Math.abs(getY() - y)); 
     }
     
-    public void moveSelector(double x, double y){
+    public void moveSelector(double x, double y){                                                                       
         double originalSelectorX = getX();
         double originalSelectorY = getY();
         
@@ -266,13 +276,133 @@ public class Selector extends javafx.scene.shape.Rectangle{
     public void toggleBeingRescaled(){
         if(beingRescaled){
             beingRescaled = false; 
+            anchorWidth = getWidth();
+            anchorHeight = getHeight(); 
+            inTopR = false; 
+            inTopL = false; 
+            inBotR = false; 
+            inBotL = false; 
+            clearLineHistory(); 
+            System.out.println("Patching");
+            patchLines();
         }
         else{
             beingRescaled = true; 
         }
     }
-    
+    public void scale(double x, double y){
+        if(inTopR){
+            
+        }
+        else if(inTopL){
+            scaleFromTopL(x, y);
+        }
+        else if(inBotR){
+            
+        }
+        else if(inBotL){
+            
+        }
+    }
     public void scaleFromTopL(double x, double y){
+        double botRX = getX() + getWidth(); 
+        double botRY = getY() + getHeight(); 
+
+        if(getX() > x && getY() > y){
+            setHeight(Math.abs(y - getY()) + getHeight());
+            setWidth(Math.abs(y - getY()) + getWidth());
+            
+        }
         
+        if(getX() < x && getY() < y){ 
+            setHeight(getHeight() - Math.abs(y - getY()));
+            setWidth(getWidth() - Math.abs(y - getY()));
+        }
+        
+        setX(botRX - getWidth()); 
+        setY(botRY - getHeight());
+        
+        double scalar = 0.0; 
+        if(getHeight() > anchorHeight){
+            scalar =  getHeight()/anchorHeight;
+
+        }
+        
+        else if(getHeight() < anchorHeight){
+            scalar = (getHeight())/anchorHeight;
+            System.out.println("Before " + scalar);
+            scalar = scalar;
+            System.out.println("After " + scalar);
+        }
+        
+        scaleLines(scalar);
+        centerLines();
+        
+    }
+    
+    public void patchLines(){
+        for(Line l: lines){
+            l.patch(); 
+            screen.getChildren().removeAll(l);
+            screen.getChildren().addAll(l);
+        }
+    }
+    
+    public void scaleLines(double scalar){
+        for(Line l: lines){
+            if(l.haveHistoryCoordinates()){
+                l.restoreToHistory();
+            }
+            else{
+                l.setHistoryCoordinates();
+            }
+            l.blowUp(scalar);
+        }
+    }
+    
+    public void centerLines(){
+        double centerX = getX() + getWidth()/2; 
+        double centerY = getY() + getHeight()/2; 
+        
+        for(Line l: lines){
+            double lineCenter[] = l.getCenterPoint();
+            double difX = Math.abs(lineCenter[0] - centerX); 
+            double difY = Math.abs(lineCenter[1] - centerY);
+            
+            if(lineCenter[0] > centerX){
+                difX *= -1; 
+            }
+            if(lineCenter[1] > centerY){
+                difY *= -1; 
+            }
+            l.moveLine(difX, difY);
+        }
+    }
+    
+    public boolean checkInCorners(double x, double y){
+        if(topR.contains(x, y)){
+            inTopR = true;
+            return true; 
+        }
+        else if(topL.contains(x,y)){
+            inTopL = true;
+            return true;
+        }
+        else if(botR.contains(x,y)){
+            inBotR = true; 
+            return true;
+        }
+        else if(botL.contains(x,y)){
+            inBotL = true; 
+            return true; 
+        }
+        
+        return false;
+    }
+    
+    public void clearLineHistory(){
+        for(Line l: lines){
+            l.clearLineHistory(); 
+        }
     }
 }

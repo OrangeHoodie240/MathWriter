@@ -46,6 +46,7 @@ public class Screen extends Pane{
         
         
         setOnMousePressed(e ->{
+            //Test information
             if(MouseButton.PRIMARY == e.getButton() && selector.getSizeFinalized()){
                 if(selector.getTopR().contains(e.getX(), e.getY())){
                     System.out.println("Fired");
@@ -138,9 +139,10 @@ public class Screen extends Pane{
             
                 }
             
-            
-                lines.add(line);
-                line = new Line(); 
+                if(!line.isEmpty()){
+                    lines.add(line);
+                    line = new Line();
+                }
             }
             else if(MouseButton.SECONDARY == e.getButton()){
                 toggleSecondaryClick(); 
@@ -153,7 +155,11 @@ public class Screen extends Pane{
             if(primaryClick == false && secondaryClick == false){
                     if(selector.getSizeFinalized() == false){
                         selector.toggleSizeFinalized();
-                        selector.getLines(); 
+                        selector.loadLines(); 
+                        
+                        if(selector.isEmpty()){
+                            getChildren().remove(selector);
+                        }
                     }
                     
             }

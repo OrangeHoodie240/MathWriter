@@ -57,7 +57,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
     }
     
     
-    public void getLines(){
+    public void loadLines(){
         for(Line l: screen.lines){
             if(containsLine(l)){
                 lines.add(l); 
@@ -76,7 +76,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
     }
     
     public void emptyLines(){
-        lines = new Lines(); 
+        lines.clear();
     }
     
     public void toggleSizeFinalized(){
@@ -186,5 +186,14 @@ public class Selector extends javafx.scene.shape.Rectangle{
     
     public Rectangle getBotL(){
         return botL; 
+    }
+    
+    public boolean isEmpty(){
+        if(lines.isEmpty()){
+            return true; 
+        }
+        else{
+            return false; 
+        }
     }
 }

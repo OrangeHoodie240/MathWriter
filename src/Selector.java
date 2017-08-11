@@ -137,6 +137,8 @@ public class Selector extends javafx.scene.shape.Rectangle{
         }
         
         moveLines(xChange, yChange);
+        
+        updateScaleSpots();
     }
     public void moveLines(double x, double y){
         for(Line l: lines){

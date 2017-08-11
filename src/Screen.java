@@ -48,7 +48,19 @@ public class Screen extends Pane{
         setOnMousePressed(e ->{
             //Test information
             if(MouseButton.PRIMARY == e.getButton() && selector.getSizeFinalized()){
+                if(selector.getTopL().contains(e.getX(), e.getY())){
+                    System.out.println("Fired");
+                }
+                
                 if(selector.getTopR().contains(e.getX(), e.getY())){
+                    System.out.println("Fired");
+                }
+                
+                if(selector.getBotL().contains(e.getX(), e.getY())){
+                    System.out.println("Fired");
+                }
+                
+                if(selector.getBotR().contains(e.getX(), e.getY())){
                     System.out.println("Fired");
                 }
             }

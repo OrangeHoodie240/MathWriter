@@ -14,6 +14,13 @@ public class Selector extends javafx.scene.shape.Rectangle{
     protected boolean isMoving = false; 
     protected double mouseXDist = 0.0; 
     protected double mouseYDist = 0.0; 
+    protected boolean beingRescaled = false; 
+    protected boolean botRIsAnchor = false;
+    protected boolean botLIsAnchor = false; 
+    protected boolean topRIsAnchor = false ;
+    protected boolean topLIsAnchor = false; 
+    protected double[] anchorPoint = new double[2]; 
+    
     
     protected javafx.scene.shape.Rectangle topL = new Rectangle(); 
     protected javafx.scene.shape.Rectangle topR = new Rectangle(); 
@@ -25,6 +32,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         setFill(Color.color(0, 1, 0, .1));
         setStroke(Color.BLACK);
         setStrokeWidth(1);
+        
     }
     
     public void setSelector(double x, double y){
@@ -32,6 +40,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         setY(y);
         setWidth(10);
         setHeight(10);
+        updateAnchorPoint(); 
         updateScaleSpots(); 
         sizeInitialized = false; 
         isMoving = false; 
@@ -39,16 +48,61 @@ public class Selector extends javafx.scene.shape.Rectangle{
     
     public void resize(double x, double y){
         if(sizeInitialized == false){
-            if(x > getX()){
-            double difX = Math.abs(getX() - x);
+                    
+                        
+            double difX = Math.abs(anchorPoint[0] - x);
             setWidth(difX);
-            } 
-        
-            if(y > getY()){
-                double difY = Math.abs(getY() - y); 
-                setHeight(difY);
+            double difY = Math.abs(anchorPoint[1] - y); 
+            setHeight(difY);
+                
+            if(x > anchorPoint[0] && y > anchorPoint[1]){
+                topLIsAnchor = true; 
+                botRIsAnchor = false; 
+                botLIsAnchor = false; 
+                topRIsAnchor = false; 
             }
-        
+            else if(x > anchorPoint[0] && y < anchorPoint[1]){
+                botLIsAnchor = true; 
+                botRIsAnchor = false; 
+                topRIsAnchor = false;
+                topLIsAnchor = false;
+            }
+            else if(x < anchorPoint[0] && y > anchorPoint[1]){
+                topRIsAnchor = true; 
+                botRIsAnchor = false; 
+                botLIsAnchor = false;
+                topLIsAnchor = false; 
+            }
+            else if(x < anchorPoint[0] && y < anchorPoint[1]){
+                botRIsAnchor = true; 
+                botLIsAnchor = false; 
+                topRIsAnchor = false;
+                topLIsAnchor = false; 
+            }
+            
+            if(topLIsAnchor){
+                setX(anchorPoint[0]);
+                setY(anchorPoint[1]);
+            }
+            else if(botLIsAnchor){
+                double x2 = anchorPoint[0]; 
+                double y2 = anchorPoint[1] - getHeight(); 
+                setX(x2); 
+                setY(y2); 
+            }
+            else if(botRIsAnchor){
+                double x2 = anchorPoint[0] - getWidth(); 
+                double y2 = anchorPoint[1] - getHeight();
+                setX(x2);
+                setY(y2);
+            }
+            else if(topRIsAnchor){
+                double x2 = anchorPoint[0] - getWidth(); 
+                double y2 = anchorPoint[1];
+                setX(x2); 
+                setY(y2);
+            }
+
         
         }
         
@@ -139,6 +193,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         moveLines(xChange, yChange);
         
         updateScaleSpots();
+        updateAnchorPoint(); 
     }
     public void moveLines(double x, double y){
         for(Line l: lines){
@@ -174,6 +229,11 @@ public class Selector extends javafx.scene.shape.Rectangle{
         
     }
     
+    public void updateAnchorPoint(){
+        anchorPoint[0] = getX();
+        anchorPoint[1] = getY(); 
+    }
+    
     public Rectangle getTopR(){
         return topR; 
     }
@@ -196,6 +256,19 @@ public class Selector extends javafx.scene.shape.Rectangle{
         }
         else{
             return false; 
+        }
+    }
+    
+    public boolean isBeingRescaled(){
+        return beingRescaled; 
+    }
+    
+    public void toggleBeingRescaled(){
+        if(beingRescaled){
+            beingRescaled = false; 
+        }
+        else{
+            beingRescaled = true; 
         }
     }
     

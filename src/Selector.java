@@ -22,6 +22,8 @@ public class Selector extends javafx.scene.shape.Rectangle{
     protected double[] anchorPoint = new double[2]; 
     protected double anchorWidth;
     protected double anchorHeight; 
+    protected int centerMostLineIndex; 
+
     
     protected boolean inTopR = false; 
     protected boolean inTopL = false; 
@@ -287,6 +289,7 @@ public class Selector extends javafx.scene.shape.Rectangle{
         }
         else{
             beingRescaled = true; 
+            centerMostLineIndex = findCenterMostLine(); 
         }
     }
     public void scale(double x, double y){
@@ -306,7 +309,8 @@ public class Selector extends javafx.scene.shape.Rectangle{
     public void scaleFromTopL(double x, double y){
         double botRX = getX() + getWidth(); 
         double botRY = getY() + getHeight(); 
-
+     
+        
         if(getX() > x && getY() > y){
             setHeight(Math.abs(y - getY()) + getHeight());
             setWidth(Math.abs(y - getY()) + getWidth());
@@ -332,10 +336,13 @@ public class Selector extends javafx.scene.shape.Rectangle{
             scalar = scalar;
         }
         
+        
         scaleLines(scalar);
-        centerLines();
+        
+        positionCenterMostLine();
         
     }
+    
     
     public void patchLines(){
         for(Line l: lines){
@@ -356,25 +363,55 @@ public class Selector extends javafx.scene.shape.Rectangle{
             l.blowUp(scalar);
         }
     }
+    public int findCenterMostLine(){
+        int index = 0;
+        
+        double midX = anchorWidth/2; 
+        double midY = anchorHeight/2; 
+        for(int i = 0; i < lines.size(); i++){
+            if(i == 0) continue; 
+            
+            double benchX = lines.get(index).getCenterPoint()[0];
+            double benchY = lines.get(index).getCenterPoint()[1];
+            double distBench = Math.sqrt(Math.pow(benchX-midX, 2) + Math.pow(benchY-midY, 2));
+            
+            double currentX = lines.get(i).getCenterPoint()[0];
+            double currentY = lines.get(i).getCenterPoint()[1];
+            double currentDist = Math.sqrt(Math.pow(currentX-midX, 2) + Math.pow(currentY-midY, 2));
+            
+            if(currentDist < distBench) index = i;  
+            
+        }
+        
+        
+        return index;
+    }
     
-    public void centerLines(){
+    
+    public void positionCenterMostLine(){
         double centerX = getX() + getWidth()/2; 
         double centerY = getY() + getHeight()/2; 
         
-        for(Line l: lines){
-            double lineCenter[] = l.getCenterPoint();
-            double difX = Math.abs(lineCenter[0] - centerX); 
-            double difY = Math.abs(lineCenter[1] - centerY);
-            
-            if(lineCenter[0] > centerX){
-                difX *= -1; 
-            }
-            if(lineCenter[1] > centerY){
-                difY *= -1; 
-            }
-            l.moveLine(difX, difY);
+        Line l = lines.get(centerMostLineIndex); 
+        double lineCenter[] = l.getCenterPoint();
+        double difX = Math.abs(lineCenter[0] - centerX); 
+        double difY = Math.abs(lineCenter[1] - centerY);
+
+        if(lineCenter[0] > centerX){
+            difX *= -1; 
         }
+        if(lineCenter[1] > centerY){
+            difY *= -1; 
+        }
+        
+        for(Line ln: lines){
+            ln.moveLine(difX, difY);
+        }
+
+            
+        
     }
+    
     
     public boolean checkInCorners(double x, double y){
         if(topR.contains(x, y)){
@@ -402,4 +439,6 @@ public class Selector extends javafx.scene.shape.Rectangle{
             l.clearLineHistory(); 
         }
     }
+   
+
 }

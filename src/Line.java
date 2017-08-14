@@ -15,10 +15,10 @@ public class Line extends java.util.ArrayList<BulletInk>{
     }
     public void blowUp(double scalar){
         if(size() > 0){
-            
+           /* 
             double midX = getCenterPoint()[0];
             double midY = getCenterPoint()[1];
-      
+      */
             double x = 0.0; 
             double y = 0.0;
             for(int i = 0; i < size() ; i++){
@@ -28,7 +28,7 @@ public class Line extends java.util.ArrayList<BulletInk>{
                 get(i).setX(x * scalar);
                 get(i).setY(y * scalar);
             }
-        
+        /*
             double tempMidX = getCenterPoint()[0]; 
             double tempMidY = getCenterPoint()[1];
         
@@ -39,7 +39,7 @@ public class Line extends java.util.ArrayList<BulletInk>{
             if(tempMidY > midY) moveY *= -1;
         
             moveLine(moveX, moveY);
-        
+        */
         }
     }
     
